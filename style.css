@@ -1,0 +1,182 @@
+/* ================================
+   VARIÁVEIS
+================================ */
+:root {
+    --cor-principal: #1e40af;
+    --cor-texto: #ffffff;
+    --cor-fundo-card: rgba(0,0,0,0.35);
+    --cor-botao: rgba(30, 64, 175, 0.75);
+    --cor-botao-hover: #1e40af;
+    --glass: rgba(255,255,255,0.07);
+}
+
+/* ================================
+   GLOBAL
+================================ */
+body {
+    margin: 0;
+    padding: 0;
+    background: #050505;
+    color: var(--cor-texto);
+    font-family: "Segoe UI", sans-serif;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* ================================
+   FUNDO ANIMADO
+================================ */
+#stars, #stars2, #stars3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200vh;
+    pointer-events: none;
+}
+
+@keyframes animStar {
+    from { transform: translateY(0); }
+    to { transform: translateY(-100vh); }
+}
+
+#stars {
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow:
+        200px 300px #fff, 400px 100px #fff, 700px 250px #fff,
+        900px 500px #fff, 300px 650px #fff, 150px 900px #fff,
+        600px 1100px #fff;
+    animation: animStar 45s linear infinite;
+}
+
+#stars2 {
+    box-shadow:
+        100px 200px #fff, 450px 350px #fff, 700px 150px #fff,
+        900px 450px #fff, 200px 800px #fff, 500px 950px #fff,
+        850px 1300px #fff;
+    animation: animStar 65s linear infinite;
+    opacity: .7;
+    transform: scale(.8);
+}
+
+#stars3 {
+    box-shadow:
+        50px 50px #fff, 800px 600px #fff, 950px 300px #fff,
+        200px 1000px #fff, 550px 1200px #fff;
+    animation: animStar 90s linear infinite;
+    opacity: .5;
+    transform: scale(.6);
+}
+
+/* ================================
+   CARD PRINCIPAL
+================================ */
+.container-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.container {
+    width: 420px;
+    padding: 28px;
+    border-radius: 18px;
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    border: 1.4px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    transition: transform .25s ease-out;
+    text-align: center;
+}
+
+/* ================================
+   LOGO
+================================ */
+.avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 5px solid var(--cor-principal);
+    box-shadow: 0 0 25px var(--cor-principal);
+    object-fit: cover;
+    margin-bottom: 14px;
+}
+
+/* ================================
+   TÍTULO
+================================ */
+.glow-name {
+    font-size: 2.3em;
+    font-weight: 800;
+    animation: neon 2s ease-in-out infinite alternate;
+}
+
+@keyframes neon {
+    0% { text-shadow: 0 0 10px #fff, 0 0 20px var(--cor-principal); }
+    100% { text-shadow: 0 0 20px #fff, 0 0 40px var(--cor-principal); }
+}
+
+/* ================================
+   BOTÕES CORRIGIDOS (SEM BUG DE BORDA)
+================================ */
+.links-section {
+    margin-top: 20px;
+}
+
+.link-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 14px;
+
+    background: var(--cor-botao);
+    border: 2px solid var(--cor-principal);
+    border-radius: 12px;
+
+    font-size: 1.05em;
+    color: var(--cor-texto);
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: .25s;
+    box-shadow: 0 0 15px rgba(30,64,175,0.35);
+
+    /* CORREÇÃO DA BORDA interna (fica dentro do quadro SEM cortar) */
+    box-sizing: border-box;
+}
+
+.link-button:hover {
+    background: var(--cor-botao-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px var(--cor-principal);
+}
+
+/* BOTÃO ESPECIAL DO DISCORD COM EFEITO "PULSO" */
+.discord-button {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(30, 64, 175, 0.8); }
+    70% { box-shadow: 0 0 0 10px rgba(30, 64, 175, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(30, 64, 175, 0); }
+}
+
+/* ================================
+   FOOTER
+================================ */
+.footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: .8em;
+    color: #cfcfcf;
+}

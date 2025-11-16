@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FIRE PVP</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --main:#1e40af;
+      --bg:#070707;
+      --glass: rgba(255,255,255,0.06);
+      --text:#fff;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#03030a 0%, #071025 100%);font-family:Inter,Segoe UI,system-ui,Arial; color:var(--text);overflow:hidden}
+    /* stars */
+    #stars, #stars2, #stars3{position:fixed;left:0;top:0;width:100%;height:200vh;pointer-events:none;z-index:1}
+    /* container */
+    .wrap{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+    .card{width:100%;max-width:520px;background:var(--glass);backdrop-filter:blur(12px);border-radius:16px;padding:28px;border:1px solid rgba(255,255,255,0.06);box-shadow:0 10px 40px rgba(0,0,0,0.6);transform-style:preserve-3d}
+    .logo{width:96px;height:96px;border-radius:50%;border:4px solid var(--main);box-shadow:0 0 30px var(--main);display:block;margin:0 auto 14px;object-fit:cover}
+    h1{margin:0;text-align:center;font-size:2rem;letter-spacing:0.5px}
+    .glow{animation:neon 2s ease-in-out infinite alternate}
+    @keyframes neon{from{text-shadow:0 0 6px #fff,0 0 18px var(--main)} to{text-shadow:0 0 14px #fff,0 0 36px var(--main)}}
+    p.desc{text-align:center;color:#cfcfcf;margin:12px 0 20px}
+    .links{display:grid;grid-template-columns:1fr;gap:10px}
+    .btn{display:flex;gap:10px;align-items:center;justify-content:center;padding:12px;border-radius:10px;text-decoration:none;color:var(--text);background:linear-gradient(90deg,rgba(30,64,175,0.75),rgba(30,64,175,0.6));border:1px solid rgba(255,255,255,0.06);font-weight:700;cursor:pointer}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(30,64,175,0.15)}
+    footer{text-align:center;margin-top:18px;color:#9aa}
+    /* overlay to unlock audio */
+    .overlay {
+      position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(0deg, rgba(0,0,0,0.65), rgba(0,0,0,0.45));
+      transition:opacity .25s ease;
+    }
+    .overlay .panel{
+      background:rgba(0,0,0,0.55);padding:28px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);text-align:center;
+      box-shadow:0 10px 40px rgba(0,0,0,0.6)
+    }
+    .bigplay{font-size:1.05rem;padding:12px 18px;border-radius:8px;background:var(--main);border:none;color:#fff;cursor:pointer;font-weight:800}
+    .small{font-size:0.9rem;color:#ddd;margin-top:8px}
+    /* player controls + visualizer */
+    .player-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:16px}
+    .toggle{width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .vol{display:flex;gap:6px;align-items:center}
+    .visualizer{display:flex;gap:4px;align-items:end;height:40px}
+    .bar{width:6px;height:10px;background:linear-gradient(180deg,var(--main),#fff);border-radius:3px;transform-origin:bottom;animation:bar 800ms linear infinite}
+    .bar:nth-child(2){animation-delay:80ms}.bar:nth-child(3){animation-delay:160ms}.bar:nth-child(4){animation-delay:240ms}.bar:nth-child(5){animation-delay:320ms}
+    @keyframes bar{0%{transform:scaleY(.2)}50%{transform:scaleY(1.2)}100%{transform:scaleY(.3)}}
+    /* small responsive */
+    @media (max-width:480px){
+      .card{padding:18px}
+      h1{font-size:1.6rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- background stars (kept minimal) -->
+  <div id="stars"></div><div id="stars2"></div><div id="stars3"></div>
+
+  <div class="wrap">
+    <div class="card">
+      <img class="logo" src="https://via.placeholder.com/96x96/1e40af/ffffff?text=LOGO" alt="logo">
+      <h1 class="glow">FIRE PVP</h1>
+      <p class="desc">Melhor servidor PVP da América Latina — contate-nos: starkpvp.fivembr@gmail.com</p>
+
+      <div class="links">
+        <a class="btn" href="https://discord.gg/VUBkVzm8SG" target="_blank"><i class="bx bxl-discord-alt"></i> Junte-se ao Discord</a>
+        <a class="btn" href="#"><i class="bx bx-money-withdraw"></i> Loja do Servidor</a>
+        <a class="btn" href="https://www.youtube.com/@highfpss"><i class="bx bxl-youtube"></i> Canal do YouTube</a>
+      </div>
+
+      <!-- Player controls + visualizer -->
+      <div class="player-row" style="margin-top:18px">
+        <div class="toggle" id="playToggle" title="Play / Pause"><i class="bx bx-play" id="playIcon"></i></div>
+        <div class="visualizer" id="viz">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+        <div class="vol">
+          <i class="bx bx-volume-full"></i>
+        </div>
+      </div>
+
+      <footer>❤️ Feito por NIKO G0D</footer>
+    </div>
+  </div>
+
+  <!-- Big overlay to force a user gesture for audio unlock -->
+  <div class="overlay" id="overlay">
+    <div class="panel">
+      <h2 style="margin:0 0 10px">Clique para ligar a música</h2>
+      <button class="bigplay" id="unlockBtn">Tocar Música — Clique Aqui</button>
+      <div class="small">Navegadores exigem um clique do usuário para tocar áudio com som. Depois de clicar, a música tocará automaticamente.</div>
+    </div>
+  </div>
+
+  <!-- Audio element (use your own file by replacing src) -->
+  <audio id="audioPlayer" loop preload="auto">
+    <!-- Example public mp3 for testing. Replace with 'musica.mp3' or your URL -->
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    // Elements
+    const overlay = document.getElementById('overlay');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const audio = document.getElementById('audioPlayer');
+    const playToggle = document.getElementById('playToggle');
+    const playIcon = document.getElementById('playIcon');
+    const viz = document.getElementById('viz');
+
+    // Try to autoplay muted first (some browsers allow muted autoplay)
+    audio.muted = true;
+    audio.play().catch(()=>{ /* ignore */ });
+
+    // Unlock function (called once on user interaction)
+    async function unlockAndPlay() {
+      try {
+        audio.muted = false;              // unmute after gesture
+        await audio.play();               // start playing
+        overlay.style.opacity = 0;
+        setTimeout(()=>overlay.style.display='none', 300);
+        playIcon.className = 'bx bx-pause';
+      } catch (err) {
+        // If still blocked, keep overlay visible and show message
+        alert('Não foi possível tocar automaticamente. Toque no botão de play para tentar novamente.');
+      }
+    }
+
+    // Attach user gesture: both button and any first click on document
+    unlockBtn.addEventListener('click', () => unlockAndPlay());
+    document.addEventListener('click', function onFirst(){
+      unlockAndPlay();
+      document.removeEventListener('click', onFirst);
+    }, { once: true });
+
+    // Play/pause toggle
+    playToggle.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playIcon.className = 'bx bx-pause';
+      } else {
+        audio.pause();
+        playIcon.className = 'bx bx-play';
+      }
+    });
+
+    // Basic visualizer animation control: pause bars when audio paused
+    function updateVisualizer() {
+      if (audio.paused) {
+        viz.style.opacity = '0.35';
+      } else {
+        viz.style.opacity = '1';
+      }
+    }
+
+    audio.addEventListener('play', updateVisualizer);
+    audio.addEventListener('pause', updateVisualizer);
+    audio.addEventListener('ended', updateVisualizer);
+    updateVisualizer();
+
+    // Optional: If you want to use your own local file 'musica.mp3', drop it in the same folder and uncomment:
+    // audio.querySelector('source').src = 'musica.mp3';
+    // audio.load();
+  </script>
+</body>
+</html>
